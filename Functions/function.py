@@ -13,7 +13,7 @@ student_name = ["Janak", "Rohan", "Imran","Rahul"]
 
 def removeValue(value):
 	value.pop()
-	return value
+	return valuebd
 
 for a in range(3):
 	removeValue(student_name)
