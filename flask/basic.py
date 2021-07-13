@@ -1,5 +1,5 @@
 from flask import Flask , render_template , request
-
+import  json
 app = Flask(__name__)
 
 @app.route('/')
@@ -12,7 +12,14 @@ def home():
 
 @app.route('/aboutus')
 def about():
-    return render_template("aboutus.html")
+    return json.dumps(dict( uid = 1 , name = "janak" , roll = "admin" , location = "mumbai" ))
+
+@app.route("/process_user_data",methods=['POST',"GET"])
+def process_user_data():
+    fname = request.args.get("fname")
+    lname = request.args.get("lname")
+    return json.dumps(dict(Full_Name = "{} {}".format(fname ,lname)))
+
 
 
 #web application book car from one place to other place
@@ -79,8 +86,27 @@ def userdetalis():
 
 
 #DELETE
+@app.route('/deleteuser',methods = ["POST"])
+def deleteuser():
+    userdata  = [ {"name" : "janak" , "location":"mumbai"} , {"name":"rohan" , "location":"US"} , {"name":"amit" , "location":"canada"}]
+    user = request.form['username']
+    for ud in userdata:
+        if ud["name"] == user:
+            userdata.remove(ud)
+    return json.dumps(userdata)
 
 #PUT
+@app.route('/updateuser',methods = ["PUT"])
+def updateuser():
+    userdata  = [ {"name" : "janak" , "location":"mumbai"} , {"name":"rohan" , "location":"US"} , {"name":"amit" , "location":"canada"}]
+    phoneno = request.form['phone']
+    user = request.form['username']
+    for ud in userdata:
+        if ud["name"] == user:
+            ud["phone"] = phoneno
+            userdata.append(ud)
+            break
+    return json.dumps(userdata)
 
 #PATCH
 
